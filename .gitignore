@@ -1,0 +1,12 @@
+# secrets
+.env
+# python
+__pycache__/
+.venv/
+*.pyc
+# large, reproducible raw API downloads (run extract/run_extract.py to recreate)
+data/raw/
+*.tmp
+data/*.duckdb
+data/*.duckdb.wal
+.pytest_cache/

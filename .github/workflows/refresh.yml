@@ -1,0 +1,51 @@
+# Refreshes the data once a month: extract -> build -> test -> commit the new mart.
+# Needs a repository secret called TFL_APP_KEY (Settings > Secrets and variables > Actions).
+name: monthly data refresh
+
+on:
+  schedule:
+    - cron: "0 6 3 * *"    # 06:00 UTC on the 3rd of every month
+  workflow_dispatch:        # plus a "Run workflow" button for manual runs
+
+permissions:
+  contents: write           # allowed to commit the refreshed data
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      # Keep raw downloads between runs so the extract stays incremental
+      # (e.g. only the newest month of crime data is fetched).
+      - uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+
+      - name: Extract
+        env:
+          TFL_APP_KEY: ${{ secrets.TFL_APP_KEY }}
+        run: python extract/run_extract.py
+
+      - name: Build models
+        run: python pipeline/run_models.py
+
+      - name: Test
+        run: pytest -v
+
+      # Only reached if the tests pass, so bad data never reaches the app.
+      - name: Commit refreshed mart
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/marts/stations.parquet
+          git diff --staged --quiet || git commit -m "Monthly data refresh"
+          git push
