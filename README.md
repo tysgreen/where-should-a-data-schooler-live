@@ -75,7 +75,8 @@ The database is rebuilt from scratch every run, so the same raw files always giv
 Needs Python 3.10+ and a free TfL key ([api-portal.tfl.gov.uk](https://api-portal.tfl.gov.uk) → subscribe to "500 Requests per min").
 
 ```bash
-git clone <this repo> && cd where-should-a-data-schooler-live
+git clone https://github.com/tysgreen/where-should-a-data-schooler-live.git
+cd where-should-a-data-schooler-live
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
