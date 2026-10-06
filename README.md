@@ -105,15 +105,7 @@ Settings (office postcode, 500m radius, networks, months of crime) live in `conf
 
 ## Where AI helped
 
-I used Claude (Anthropic) as a pair programmer throughout. I chose the direction at every step, ran everything against the real APIs, and reviewed all the code.
-
-| Stage | What Claude did | What I did |
-|---|---|---|
-| Choosing the idea | Researched ~25 free APIs, checking access, terms and rate limits | Rejected ideas that felt boring; picked this one |
-| Testing an idea first | Wrote a feasibility check for an earlier "meal deal optimiser" idea | Ran it; it showed the data was too patchy, so I dropped that idea |
-| Design | Proposed stations as the unit and the five sources | Chose the unit, the output and the office location |
-| Code | Drafted the extract scripts, SQL, tests and app | Ran them on real data, reviewed them, and decided the scoring rules |
-| Debugging | Diagnosed issues from real data (see below) | Reproduced them and approved the fixes |
+I used Claude (Anthropic) as a pair programmer and troubleshooter throughout the project.
 
 Problems found along the way, and how they were fixed:
 - The first raw crime load ran out of memory. DuckDB was copying each whole JSON line onto every crime row. It was fixed by extracting the small fields before unnesting (see comments in `sql/01_raw.sql`).
