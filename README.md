@@ -1,5 +1,9 @@
 # Where should a Data Schooler live?
 
+**[Try the live app →](https://where-should-a-data-schooler-live.streamlit.app/)**
+
+[![tests](https://github.com/tysgreen/where-should-a-data-schooler-live/actions/workflows/ci.yml/badge.svg)](https://github.com/tysgreen/where-should-a-data-schooler-live/actions/workflows/ci.yml)
+
 An app that ranks every London tube, DLR, Overground and Elizabeth line station as a place to live while training at the Data School (25 Watling Street, EC4M 9BR). It scores **commute, rent, safety, things to do and green space**, and you choose how much each one matters.
 
 It's built on a small but complete data pipeline: **6 free data sources → Python extract → DuckDB SQL layers → tested → Streamlit app**, refreshed automatically every month.
